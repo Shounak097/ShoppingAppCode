@@ -1,7 +1,9 @@
 package com.example.ShoppingApp.controller;
 
+import com.example.ShoppingApp.dto.ProductDTO;
 import com.example.ShoppingApp.model.Category;
 import com.example.ShoppingApp.service.CategoryService;
+import com.example.ShoppingApp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import java.util.Optional;
 
 @Controller
 public class AdminController {
+    @Autowired
+    ProductService productService;
     @Autowired
     CategoryService categoryService;
     @GetMapping("/admin")
@@ -50,4 +54,16 @@ public class AdminController {
             return "404";
         }
     }
+    @GetMapping("/admin/products")
+    public String products(Model model){
+        model.addAttribute("products", productService.getAllProduct());
+        return "products";
+    }
+    @GetMapping("/admin/products/add")
+    public String productAddGet(Model model){
+        model.addAttribute("productDTO", new ProductDTO());
+        model.addAttribute("categories", categoryService.getAllCategory());
+        return "productAdd";
+    }
+
 }
